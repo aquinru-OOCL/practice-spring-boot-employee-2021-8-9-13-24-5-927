@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -105,4 +106,18 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$.salary").value(7000));
     }
 
+    @Test
+    public void should_delete_employee_when_delete_given_employee_id() throws Exception {
+        // Given
+        Employee employee = new Employee(2, "janley", 18, "male", 80000);
+        Employee createdEmployee = employeeRepository.save(employee);
+        Integer employeeId = createdEmployee.getId();
+
+        // When
+        mockMvc.perform(MockMvcRequestBuilders.delete("/employees/" + employeeId))
+                .andExpect(status().isOk());
+
+        // Then
+        assertFalse(employeeRepository.findById(employee.getId()).isPresent());
+    }
 }
