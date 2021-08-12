@@ -21,4 +21,9 @@ public class CompanyService {
     public Company addCompany(Company company) {
         return companyRepository.save(company);
     }
+
+    public Company findCompanyById(Integer companyId) {
+        return companyRepository.findById(companyId).orElse(null);
+    }
+
 }
