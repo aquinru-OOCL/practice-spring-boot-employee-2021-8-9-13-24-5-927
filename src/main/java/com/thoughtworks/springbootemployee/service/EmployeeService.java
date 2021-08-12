@@ -18,10 +18,6 @@ public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-//    public EmployeeService(EmployeeRepository employeeRepository) {
-//        this.employeeRepository = employeeRepository;
-//    }
-
     public List<Employee> findEmployees() {
         return employeeRepository.findAll();
     }
