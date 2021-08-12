@@ -2,17 +2,14 @@ package com.thoughtworks.springbootemployee.integration;
 
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.awt.*;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -24,6 +21,11 @@ public class EmployeeIntegrationTest {
     private MockMvc mockMvc;
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @AfterEach
+    void tearDown() {
+        employeeRepository.deleteAll();
+    }
 
     @Test
     void should_return_all_employees_when_call_find_employees() throws Exception {
@@ -43,7 +45,7 @@ public class EmployeeIntegrationTest {
 
     @Test
     void should_add_employee_when_call_add_employee() throws Exception {
-        //given
+        // Given
         String employee = "{\n" +
                 "    \"id\": 1,\n" +
                 "    \"name\": \"barbielot\",\n" +
@@ -52,14 +54,13 @@ public class EmployeeIntegrationTest {
                 "    \"salary\": 1000\n" +
                 "}";
 
-        //when
+        // When
         mockMvc.perform(MockMvcRequestBuilders.post("/employees")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(employee))
-        .andExpect(jsonPath("$.name").value("barbielot"))
-        .andExpect(jsonPath("$.gender").value("male"))
-        .andExpect(jsonPath("$.salary").value("1000"));
+                .andExpect(jsonPath("$.name").value("barbielot"))
+                .andExpect(jsonPath("$.gender").value("male"))
+                .andExpect(jsonPath("$.salary").value("1000"));
     }
-
 
 }
