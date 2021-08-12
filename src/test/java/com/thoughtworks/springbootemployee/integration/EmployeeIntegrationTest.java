@@ -120,4 +120,38 @@ public class EmployeeIntegrationTest {
         // Then
         assertFalse(employeeRepository.findById(employee.getId()).isPresent());
     }
+
+    @Test
+    public void should_return_specific_employee_when_get_by_gender_given_employee_gender() throws Exception {
+        //given
+        Employee employee1 = new Employee(1, "russ", 22, "male", 5000);
+        Employee employee2 = new Employee(2, "janley", 18, "male", 80000);
+        Employee employee3 = new Employee(3, "barbie", 20, "female", 9999);
+
+        Integer employeeId1 = employeeRepository.save(employee1).getId();
+        Integer employeeId2 = employeeRepository.save(employee2).getId();
+        Integer employeeId3 = employeeRepository.save(employee3).getId();
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/employees?gender=male"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(employeeId1))
+                .andExpect(jsonPath("$[0].name").value(employee1.getName()))
+                .andExpect(jsonPath("$[0].age").value(employee1.getAge()))
+                .andExpect(jsonPath("$[0].gender").value(employee1.getGender()))
+                .andExpect(jsonPath("$[0].salary").value(employee1.getSalary()))
+                .andExpect(jsonPath("$[1].id").value(employeeId2))
+                .andExpect(jsonPath("$[1].name").value(employee2.getName()))
+                .andExpect(jsonPath("$[1].age").value(employee2.getAge()))
+                .andExpect(jsonPath("$[1].gender").value(employee2.getGender()))
+                .andExpect(jsonPath("$[1].salary").value(employee2.getSalary()));
+
+        //when then
+        mockMvc.perform(MockMvcRequestBuilders.get("/employees?gender=female"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(employeeId3))
+                .andExpect(jsonPath("$[0].name").value(employee3.getName()))
+                .andExpect(jsonPath("$[0].age").value(employee3.getAge()))
+                .andExpect(jsonPath("$[0].gender").value(employee3.getGender()))
+                .andExpect(jsonPath("$[0].salary").value(employee3.getSalary()));
+    }
 }
