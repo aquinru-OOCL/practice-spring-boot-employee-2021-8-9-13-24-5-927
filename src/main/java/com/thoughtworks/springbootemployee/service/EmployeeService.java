@@ -9,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -22,8 +21,8 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public Optional<Employee> findEmployeeById(Integer employeeId) {
-        return employeeRepository.findById(employeeId);
+    public Employee findEmployeeById(Integer employeeId) {
+        return employeeRepository.findById(employeeId).orElse(null);
     }
 
     public List<Employee> findEmployeeByGender(String gender){

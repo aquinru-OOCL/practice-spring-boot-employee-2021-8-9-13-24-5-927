@@ -50,7 +50,7 @@ public class EmployeeServiceTest {
         when(retiringEmployeeRepository.findEmployeeById(4)).thenReturn(employee);
 
         // When
-        Optional<Employee> actualEmployee = employeeService.findEmployeeById(4);
+        Employee actualEmployee = employeeService.findEmployeeById(4);
 
         // Then
         assertEquals(employee, actualEmployee);
