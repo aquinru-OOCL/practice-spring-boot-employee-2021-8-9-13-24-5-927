@@ -8,8 +8,11 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.awt.*;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -36,6 +39,27 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$[0].age").value(22))
                 .andExpect(jsonPath("$[0].gender").value("male"))
                 .andExpect(jsonPath("$[0].salary").value(5000));
-
     }
+
+    @Test
+    void should_add_employee_when_call_add_employee() throws Exception {
+        //given
+        String employee = "{\n" +
+                "    \"id\": 1,\n" +
+                "    \"name\": \"barbielot\",\n" +
+                "    \"age\": 13,\n" +
+                "    \"gender\": \"male\",\n" +
+                "    \"salary\": 1000\n" +
+                "}";
+
+        //when
+        mockMvc.perform(MockMvcRequestBuilders.post("/employees")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(employee))
+        .andExpect(jsonPath("$.name").value("barbielot"))
+        .andExpect(jsonPath("$.gender").value("male"))
+        .andExpect(jsonPath("$.salary").value("1000"));
+    }
+
+
 }
