@@ -123,7 +123,7 @@ public class EmployeeIntegrationTest {
 
     @Test
     public void should_return_specific_employee_when_get_by_gender_given_employee_gender() throws Exception {
-        //given
+        // Given
         Employee employee1 = new Employee(1, "russ", 22, "male", 5000);
         Employee employee2 = new Employee(2, "janley", 18, "male", 80000);
         Employee employee3 = new Employee(3, "barbie", 20, "female", 9999);
@@ -145,7 +145,7 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$[1].gender").value(employee2.getGender()))
                 .andExpect(jsonPath("$[1].salary").value(employee2.getSalary()));
 
-        //when then
+        // When & Then
         mockMvc.perform(MockMvcRequestBuilders.get("/employees?gender=female"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(employeeId3))
@@ -153,5 +153,32 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$[0].age").value(employee3.getAge()))
                 .andExpect(jsonPath("$[0].gender").value(employee3.getGender()))
                 .andExpect(jsonPath("$[0].salary").value(employee3.getSalary()));
+    }
+
+    @Test
+    public void should_return_2_employee_when_page_query_given_page_size_2() throws Exception {
+        // Given
+        Employee employee1 = new Employee(1, "russ", 22, "male", 5000);
+        Employee employee2 = new Employee(2, "janley", 18, "male", 80000);
+        Employee employee3 = new Employee(3, "barbie", 20, "female", 9999);
+
+        Integer employeeId1 = employeeRepository.save(employee1).getId();
+        Integer employeeId2 = employeeRepository.save(employee2).getId();
+        employeeRepository.save(employee3);
+
+        // When & Then
+        mockMvc.perform(MockMvcRequestBuilders.get("/employees?page=0&pageSize=2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(employeeId1))
+                .andExpect(jsonPath("$[0].name").value(employee1.getName()))
+                .andExpect(jsonPath("$[0].age").value(employee1.getAge()))
+                .andExpect(jsonPath("$[0].gender").value(employee1.getGender()))
+                .andExpect(jsonPath("$[0].salary").value(employee1.getSalary()))
+                .andExpect(jsonPath("$[1].id").value(employeeId2))
+                .andExpect(jsonPath("$[1].name").value(employee2.getName()))
+                .andExpect(jsonPath("$[1].age").value(employee2.getAge()))
+                .andExpect(jsonPath("$[1].gender").value(employee2.getGender()))
+                .andExpect(jsonPath("$[1].salary").value(employee2.getSalary()));
+
     }
 }
