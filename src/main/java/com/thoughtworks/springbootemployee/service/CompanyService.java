@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
+import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,14 @@ public class CompanyService {
 
         companyRepository.save(company);
         return company;
+    }
+
+    public void deleteCompany(Integer employeeId) {
+        Company company = companyRepository.findById(employeeId).orElse(null);
+        if (company == null) {
+            throw new EmployeeNotFoundException("Company ID is not found");
+        }
+        companyRepository.delete(company);
     }
 
 }
