@@ -1,8 +1,10 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import com.thoughtworks.springbootemployee.repository.RetiringEmployeeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +13,14 @@ import java.util.Optional;
 
 @Service
 public class EmployeeService {
+    @Autowired
     private RetiringEmployeeRepository retiringEmployeeRepository;
+    @Autowired
     private EmployeeRepository employeeRepository;
 
-    public EmployeeService(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
-    }
+//    public EmployeeService(EmployeeRepository employeeRepository) {
+//        this.employeeRepository = employeeRepository;
+//    }
 
     public List<Employee> findEmployees() {
         return employeeRepository.findAll();
@@ -39,7 +43,29 @@ public class EmployeeService {
     }
 
     public Employee updateEmployee(Integer employeeId, Employee employeeToBeUpdated) {
-        return retiringEmployeeRepository.updateEmployee(employeeId, employeeToBeUpdated);
+        Employee employee = employeeRepository.findById(employeeId).orElse(null);
+        if (employee != null) {
+            return updateEmployeeInfo(employee, employeeToBeUpdated);
+        }
+        throw new EmployeeNotFoundException("Employee ID is not found");
+    }
+
+    private Employee updateEmployeeInfo(Employee employee, Employee employeeToBeUpdated) {
+        if (employeeToBeUpdated.getName() != null) {
+            employee.setName(employeeToBeUpdated.getName());
+        }
+        if (employeeToBeUpdated.getAge() != null) {
+            employee.setAge(employeeToBeUpdated.getAge());
+        }
+        if (employeeToBeUpdated.getGender() != null) {
+            employee.setGender(employeeToBeUpdated.getGender());
+        }
+        if (employeeToBeUpdated.getSalary() != null) {
+            employee.setSalary(employeeToBeUpdated.getSalary());
+        }
+
+        employeeRepository.save(employee);
+        return employee;
     }
 
     public void deleteEmployee(Integer employeeId) {
