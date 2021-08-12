@@ -44,10 +44,10 @@ public class EmployeeService {
 
     public Employee updateEmployee(Integer employeeId, Employee employeeToBeUpdated) {
         Employee employee = employeeRepository.findById(employeeId).orElse(null);
-        if (employee != null) {
-            return updateEmployeeInfo(employee, employeeToBeUpdated);
+        if (employee == null) {
+            throw new EmployeeNotFoundException("Employee ID is not found");
         }
-        throw new EmployeeNotFoundException("Employee ID is not found");
+        return updateEmployeeInfo(employee, employeeToBeUpdated);
     }
 
     private Employee updateEmployeeInfo(Employee employee, Employee employeeToBeUpdated) {
@@ -69,6 +69,10 @@ public class EmployeeService {
     }
 
     public void deleteEmployee(Integer employeeId) {
-        retiringEmployeeRepository.deleteEmployee(employeeId);
+        Employee employee = employeeRepository.findById(employeeId).orElse(null);
+        if (employee == null) {
+            throw new EmployeeNotFoundException("Employee ID is not found");
+        }
+        employeeRepository.delete(employee);
     }
 }

@@ -49,7 +49,7 @@ public class EmployeesController {
         return employeeService.updateEmployee(employeeId, employeeToBeUpdated);
     }
 
-    @DeleteMapping(path = "/{employeeId}")
+    @DeleteMapping("/{employeeId}")
     public void deleteEmployee(@PathVariable Integer employeeId) {
         employeeService.deleteEmployee(employeeId);
     }
