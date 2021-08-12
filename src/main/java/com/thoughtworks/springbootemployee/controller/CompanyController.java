@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.model.Company;
+import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.CompanyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -41,5 +42,10 @@ public class CompanyController {
     @DeleteMapping("/{companyId}")
     public void deleteCompany(@PathVariable Integer companyId) {
         companyService.deleteCompany(companyId);
+    }
+
+    @GetMapping("/{companyId}/employees")
+    public List<Employee> getCompanyEmployees(@PathVariable Integer companyId) {
+        return companyService.getCompanyEmployees(companyId);
     }
 }
