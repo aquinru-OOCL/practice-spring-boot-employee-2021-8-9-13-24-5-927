@@ -88,4 +88,23 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$[0].companyName").value("OOCL"));
 
     }
+
+    @Test
+    public void should_return_updated_company_when_update_given_company_id() throws Exception {
+        // Given
+        Company company = new Company("OOCL");
+        companyRepository.save(company);
+        Integer companyId = company.getId();
+
+                String stringAsJson = "{\n" +
+                "    \"companyName\" : \"updatedOOCL\"\n" +
+                "}";
+
+        // When & Then
+        mockMvc.perform(MockMvcRequestBuilders.put("/companies/" + companyId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(stringAsJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.companyName").value("updatedOOCL"));
+    }
 }
