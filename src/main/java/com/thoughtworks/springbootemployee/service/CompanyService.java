@@ -50,7 +50,7 @@ public class CompanyService {
     public void deleteCompany(Integer employeeId) {
         Company company = companyRepository.findById(employeeId).orElse(null);
         if (company == null) {
-            throw new EmployeeNotFoundException("Company ID is not found");
+            throw new EmployeeNotFoundException("Company not found. Cannot delete non-existent company.");
         }
         companyRepository.delete(company);
     }
