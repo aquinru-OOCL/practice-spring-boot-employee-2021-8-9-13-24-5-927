@@ -124,4 +124,16 @@ public class CompanyIntegrationTest {
         // Then
         assertFalse(employeeRepository.findById(companyId).isPresent());
     }
+
+    @Test
+    public void should_return_exception_message_when_find_company_by_id_given_non_existent_company() throws Exception {
+        // Given
+
+        // When & Then
+        mockMvc.perform(MockMvcRequestBuilders.get("/companies/0"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Company not found"))
+                .andExpect(jsonPath("$.status").value("404 NOT_FOUND"))
+                .andReturn();
+    }
 }
