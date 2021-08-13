@@ -19,7 +19,7 @@ public class EmployeeService {
     }
 
     public Employee findEmployeeById(Integer employeeId) {
-        return employeeRepository.findById(employeeId).orElse(null);
+        return employeeRepository.findById(employeeId).orElseThrow(() -> new EmployeeNotFoundException("Employee not found"));
     }
 
     public List<Employee> findEmployeeByGender(String gender){
