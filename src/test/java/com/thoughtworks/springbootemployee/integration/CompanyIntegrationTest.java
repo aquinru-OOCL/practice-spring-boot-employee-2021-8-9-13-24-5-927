@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.integration;
 
 import com.thoughtworks.springbootemployee.model.Company;
+import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -12,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -106,5 +108,20 @@ public class CompanyIntegrationTest {
                 .content(stringAsJson))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.companyName").value("updatedOOCL"));
+    }
+
+    @Test
+    public void should_delete_company_when_delete_given_company_id() throws Exception {
+        // Given
+        Company company = new Company("OOCL");
+        companyRepository.save(company);
+        Integer companyId = company.getId();
+
+        // When
+        mockMvc.perform(MockMvcRequestBuilders.delete("/companies/" + companyId))
+                .andExpect(status().isOk());
+
+        // Then
+        assertFalse(employeeRepository.findById(companyId).isPresent());
     }
 }
