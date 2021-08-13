@@ -194,4 +194,26 @@ public class EmployeeIntegrationTest {
                 .andReturn();
     }
 
+    @Test
+    public void should_return_exception_message_when_update_given_non_existent_employee() throws Exception {
+        // Given
+        Employee employee = new Employee("russel", 22, "male", 5000);
+        Employee createdEmployee = employeeRepository.save(employee);
+        String updatedEmployee = "{\n" +
+                "    \"id\" : 1,\n" +
+                "    \"name\" : \"russUpdated\",\n" +
+                "    \"age\" : 23,\n" +
+                "    \"gender\" : \"female\",\n" +
+                "    \"salary\" : 7000\n" +
+                "}";
+
+        // When & Then
+        mockMvc.perform(MockMvcRequestBuilders.put("/employees/" + 99)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(updatedEmployee))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Employee not found. Cannot update non-existent employee."))
+                .andExpect(jsonPath("$.status").value("404 NOT_FOUND"));
+    }
+
 }
