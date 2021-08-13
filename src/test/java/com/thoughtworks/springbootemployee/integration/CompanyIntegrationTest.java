@@ -73,4 +73,19 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$.employees[0].gender").value("male"))
                 .andExpect(jsonPath("$.employees[0].salary").value(1000));
     }
+
+    @Test
+    public void should_return_company_when_find_company_by_id_given_company_id() throws Exception {
+        // Given
+        Company company = new Company("OOCL");
+        companyRepository.save(company);
+        Integer companyId = company.getId();
+
+        // When & Then
+        mockMvc.perform(MockMvcRequestBuilders.get("/companies/", companyId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").isNumber())
+                .andExpect(jsonPath("$[0].companyName").value("OOCL"));
+
+    }
 }
