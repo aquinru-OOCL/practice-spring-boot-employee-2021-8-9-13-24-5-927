@@ -136,4 +136,24 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$.status").value("404 NOT_FOUND"))
                 .andReturn();
     }
+
+    @Test
+    public void should_return_exception_message_when_update_given_non_existent_company() throws Exception {
+        // Given
+        Company company = new Company("OOCL");
+        companyRepository.save(company);
+        Integer companyId = company.getId();
+
+        String updatedCompany = "{\n" +
+                "    \"companyName\" : \"updatedOOCL\"\n" +
+                "}";
+
+        // When & Then
+        mockMvc.perform(MockMvcRequestBuilders.put("/employees/" + companyId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(updatedCompany))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Company not found. Cannot update non-existent company."))
+                .andExpect(jsonPath("$.status").value("404 NOT_FOUND"));
+    }
 }
