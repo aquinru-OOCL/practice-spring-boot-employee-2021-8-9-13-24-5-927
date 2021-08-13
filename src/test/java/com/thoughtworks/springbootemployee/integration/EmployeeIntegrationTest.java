@@ -181,4 +181,15 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$[1].salary").value(employee2.getSalary()));
 
     }
+
+    @Test
+    public void should_return_exception_message_when_update_given_not_existing_id() throws Exception {
+        // Given
+
+        // When & Then
+        mockMvc.perform(MockMvcRequestBuilders.get("/employees/0"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Employee not found"))
+                .andReturn();
+    }
 }
