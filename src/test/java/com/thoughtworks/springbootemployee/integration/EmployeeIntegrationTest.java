@@ -216,4 +216,15 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$.status").value("404 NOT_FOUND"));
     }
 
+    @Test
+    public void should_return_exception_message_when_delete_given_non_existent_employee() throws Exception {
+        // Given
+
+        // When & Then
+        mockMvc.perform(MockMvcRequestBuilders.delete("/employees/{employeeId}", 99))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Employee not found. Cannot delete non-existent employee."))
+                .andExpect(jsonPath("$.status").value("404 NOT_FOUND"));
+    }
+
 }
