@@ -33,7 +33,7 @@ public class CompanyService {
     public Company updateCompany(Integer companyId, Company companyToBeUpdated) {
         Company company = companyRepository.findById(companyId).orElse(null);
         if (company == null) {
-            throw new CompanyNotFoundException("Company ID is not found");
+            throw new CompanyNotFoundException("Company not found. Cannot update non-existent company.");
         }
         return updateCompanyInfo(company, companyToBeUpdated);
     }
