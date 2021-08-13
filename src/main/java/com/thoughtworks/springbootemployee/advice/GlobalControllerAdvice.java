@@ -12,7 +12,7 @@ public class GlobalControllerAdvice {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse employeeNotFoundExceptionHandling(EmployeeNotFoundException employeeNotFoundException){
-        return new ErrorResponse(employeeNotFoundException.getMessage());
+        return new ErrorResponse(employeeNotFoundException.getMessage(), HttpStatus.NOT_FOUND.toString());
     }
 
 }
