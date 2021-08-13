@@ -152,4 +152,15 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$.message").value("Company not found. Cannot update non-existent company."))
                 .andExpect(jsonPath("$.status").value("404 NOT_FOUND"));
     }
+
+    @Test
+    public void should_return_exception_message_when_delete_given_non_existent_employee() throws Exception {
+        // Given
+
+        // When & Then
+        mockMvc.perform(MockMvcRequestBuilders.delete("/companies/" + 99))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Company not found. Cannot delete non-existent company."))
+                .andExpect(jsonPath("$.status").value("404 NOT_FOUND"));
+    }
 }
