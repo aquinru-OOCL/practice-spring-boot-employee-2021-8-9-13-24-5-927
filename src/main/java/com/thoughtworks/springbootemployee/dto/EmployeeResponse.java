@@ -1,21 +1,26 @@
-package com.thoughtworks.springbootemployee.model;
+package com.thoughtworks.springbootemployee.dto;
 
-public class EmployeeRequest {
+public class EmployeeResponse {
+    private Integer id;
     private String name;
     private Integer age;
     private String gender;
     private Integer salary;
-    private Integer companyId;
 
-    public EmployeeRequest(String name, Integer age, String gender, Integer salary, Integer companyId) {
+
+    public EmployeeResponse(Integer id, String name, Integer age, String gender, Integer salary) {
+        this.id = id;
         this.name = name;
         this.age = age;
         this.gender = gender;
         this.salary = salary;
-        this.companyId = companyId;
     }
 
-    public EmployeeRequest() {
+    public EmployeeResponse() {
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getName() {
@@ -34,8 +39,8 @@ public class EmployeeRequest {
         return salary;
     }
 
-    public Integer getCompanyId() {
-        return companyId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setName(String name) {
@@ -54,7 +59,4 @@ public class EmployeeRequest {
         this.salary = salary;
     }
 
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
-    }
 }
