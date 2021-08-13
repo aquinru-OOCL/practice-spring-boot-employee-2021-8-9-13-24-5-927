@@ -140,16 +140,12 @@ public class CompanyIntegrationTest {
     @Test
     public void should_return_exception_message_when_update_given_non_existent_company() throws Exception {
         // Given
-        Company company = new Company("OOCL");
-        companyRepository.save(company);
-        Integer companyId = company.getId();
-
         String updatedCompany = "{\n" +
                 "    \"companyName\" : \"updatedOOCL\"\n" +
                 "}";
 
         // When & Then
-        mockMvc.perform(MockMvcRequestBuilders.put("/employees/" + companyId)
+        mockMvc.perform(MockMvcRequestBuilders.put("/companies/" + 99)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(updatedCompany))
                 .andExpect(status().isNotFound())
