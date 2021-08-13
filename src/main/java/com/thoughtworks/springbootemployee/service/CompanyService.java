@@ -5,6 +5,7 @@ import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,5 +57,9 @@ public class CompanyService {
 
     public List<Employee> getCompanyEmployees(Integer companyId) {
         return companyRepository.findById(companyId).map(Company::getEmployees).orElse(null);
+    }
+
+    public List<Company> findCompaniesByPagination(Integer pageIndex, Integer pageSize){
+        return companyRepository.findAll(PageRequest.of(pageIndex, pageSize)).getContent();
     }
 }
