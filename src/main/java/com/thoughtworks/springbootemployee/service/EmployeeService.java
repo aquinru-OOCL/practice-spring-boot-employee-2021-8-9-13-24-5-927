@@ -37,7 +37,7 @@ public class EmployeeService {
     public Employee updateEmployee(Integer employeeId, Employee employeeToBeUpdated) {
         Employee employee = employeeRepository.findById(employeeId).orElse(null);
         if (employee == null) {
-            throw new EmployeeNotFoundException("Employee ID is not found");
+            throw new EmployeeNotFoundException("Employee not found. Cannot update non-existent employee.");
         }
         return updateEmployeeInfo(employee, employeeToBeUpdated);
     }
@@ -66,7 +66,7 @@ public class EmployeeService {
     public void deleteEmployee(Integer employeeId) {
         Employee employee = employeeRepository.findById(employeeId).orElse(null);
         if (employee == null) {
-            throw new EmployeeNotFoundException("Employee ID is not found");
+            throw new EmployeeNotFoundException("Employee not found. Cannot delete non-existent employee.");
         }
         employeeRepository.delete(employee);
     }
