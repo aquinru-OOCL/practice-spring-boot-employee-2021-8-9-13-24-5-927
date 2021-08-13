@@ -27,7 +27,7 @@ public class CompanyService {
     }
 
     public Company findCompanyById(Integer companyId) {
-        return companyRepository.findById(companyId).orElse(null);
+        return companyRepository.findById(companyId).orElseThrow(() -> new CompanyNotFoundException("Company not found"));
     }
 
     public Company updateCompany(Integer companyId, Company companyToBeUpdated) {
