@@ -31,7 +31,7 @@ public class EmployeeIntegrationTest {
     @Test
     void should_return_all_employees_when_call_find_employees() throws Exception {
         // Given
-        final Employee employee = new Employee(1, "russel", 22, "male", 5000);
+        final Employee employee = new Employee("russel", 22, "male", 5000);
         employeeRepository.save(employee);
 
         // When & Then
@@ -67,7 +67,7 @@ public class EmployeeIntegrationTest {
     @Test
     public void should_return_specific_employee_when_get_by_id_given_employee_id() throws Exception {
         // Given
-        final Employee employee = new Employee(2, "marimar", 20, "female", 1122);
+        final Employee employee = new Employee("marimar", 20, "female", 1122);
         employeeRepository.save(employee);
 
         // When & Then
@@ -83,7 +83,7 @@ public class EmployeeIntegrationTest {
     @Test
     public void should_update_employee_when_update_given_employee() throws Exception {
         // Given
-        Employee employee = new Employee(1, "russel", 22, "male", 5000);
+        Employee employee = new Employee("russel", 22, "male", 5000);
         Employee createdEmployee = employeeRepository.save(employee);
         Integer employeeId = createdEmployee.getId();
         String updatedEmployee = "{\n" +
@@ -109,7 +109,7 @@ public class EmployeeIntegrationTest {
     @Test
     public void should_delete_employee_when_delete_given_employee_id() throws Exception {
         // Given
-        Employee employee = new Employee(2, "janley", 18, "male", 80000);
+        Employee employee = new Employee("janley", 18, "male", 80000);
         Employee createdEmployee = employeeRepository.save(employee);
         Integer employeeId = createdEmployee.getId();
 
@@ -124,9 +124,9 @@ public class EmployeeIntegrationTest {
     @Test
     public void should_return_specific_employee_when_get_by_gender_given_employee_gender() throws Exception {
         // Given
-        Employee employee1 = new Employee(1, "russ", 22, "male", 5000);
-        Employee employee2 = new Employee(2, "janley", 18, "male", 80000);
-        Employee employee3 = new Employee(3, "barbie", 20, "female", 9999);
+        Employee employee1 = new Employee( "russ", 22, "male", 5000);
+        Employee employee2 = new Employee("janley", 18, "male", 80000);
+        Employee employee3 = new Employee("barbie", 20, "female", 9999);
 
         Integer employeeId1 = employeeRepository.save(employee1).getId();
         Integer employeeId2 = employeeRepository.save(employee2).getId();
@@ -158,9 +158,9 @@ public class EmployeeIntegrationTest {
     @Test
     public void should_return_2_employee_when_page_query_given_page_size_2() throws Exception {
         // Given
-        Employee employee1 = new Employee(1, "russ", 22, "male", 5000);
-        Employee employee2 = new Employee(2, "janley", 18, "male", 80000);
-        Employee employee3 = new Employee(3, "barbie", 20, "female", 9999);
+        final Employee employee1 = new Employee("russ", 22, "male", 5000);
+        Employee employee2 = new Employee("janley", 18, "male", 80000);
+        Employee employee3 = new Employee("barbie", 20, "female", 9999);
 
         Integer employeeId1 = employeeRepository.save(employee1).getId();
         Integer employeeId2 = employeeRepository.save(employee2).getId();
