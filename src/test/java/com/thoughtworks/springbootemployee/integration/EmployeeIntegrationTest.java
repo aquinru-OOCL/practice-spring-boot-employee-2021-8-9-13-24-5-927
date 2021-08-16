@@ -2,7 +2,7 @@ package com.thoughtworks.springbootemployee.integration;
 
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,7 +23,7 @@ public class EmployeeIntegrationTest {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    @AfterEach
+    @BeforeEach
     void tearDown() {
         employeeRepository.deleteAll();
     }
@@ -31,17 +31,17 @@ public class EmployeeIntegrationTest {
     @Test
     void should_return_all_employees_when_call_find_employees() throws Exception {
         // Given
-        final Employee employee = new Employee("russ", 22, "male", 1000);
+        final Employee employee = new Employee("russel", 22, "male", 5000);
         employeeRepository.save(employee);
 
         // When & Then
         mockMvc.perform(MockMvcRequestBuilders.get("/employees"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").isNumber())
-                .andExpect(jsonPath("$[0].name").value("russ"))
+                .andExpect(jsonPath("$[0].name").value("russel"))
                 .andExpect(jsonPath("$[0].age").value(22))
                 .andExpect(jsonPath("$[0].gender").value("male"))
-                .andExpect(jsonPath("$[0].salary").value(1000));
+                .andExpect(jsonPath("$[0].salary").value(5000));
     }
 
     @Test
@@ -67,7 +67,7 @@ public class EmployeeIntegrationTest {
     @Test
     public void should_return_specific_employee_when_get_by_id_given_employee_id() throws Exception {
         // Given
-        final Employee employee = new Employee("russ", 20, "male", 1000);
+        final Employee employee = new Employee("russel", 22, "male", 5000);
         employeeRepository.save(employee);
         Integer employeeId = employee.getId();
 
@@ -75,10 +75,10 @@ public class EmployeeIntegrationTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/employees/", employeeId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").isNumber())
-                .andExpect(jsonPath("$[0].name").value("russ"))
+                .andExpect(jsonPath("$[0].name").value("russel"))
                 .andExpect(jsonPath("$[0].age").value(22))
                 .andExpect(jsonPath("$[0].gender").value("male"))
-                .andExpect(jsonPath("$[0].salary").value(1000));
+                .andExpect(jsonPath("$[0].salary").value(5000));
     }
 
     @Test
